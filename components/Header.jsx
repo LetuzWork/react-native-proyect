@@ -2,6 +2,7 @@ import styled from "styled-components/native";
 // import { Text } from 'react-native'; 
 
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const HeaderContainer = styled.View`
     display: flex;
@@ -25,12 +26,14 @@ const AccountButton = styled.TouchableOpacity`
 
 const Header = () =>{
     return (
+        <SafeAreaView>
         <HeaderContainer>
             <Title>Batsy</Title>
             <AccountButton>
                 <MaterialIcon name="person" size={36} color="#fff" />
             </AccountButton>
         </HeaderContainer>
+        </SafeAreaView>
     )
 }
 
