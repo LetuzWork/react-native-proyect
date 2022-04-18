@@ -1,5 +1,7 @@
 import styled from "styled-components/native";
-import { Text} from 'react-native'; 
+// import { Text } from 'react-native'; 
+
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 
 const HeaderContainer = styled.View`
     display: flex;
@@ -26,7 +28,7 @@ const Header = () =>{
         <HeaderContainer>
             <Title>Batsy</Title>
             <AccountButton>
-                <Text>Account</Text>
+                <MaterialIcon name="person" size={36} color="#fff" />
             </AccountButton>
         </HeaderContainer>
     )
