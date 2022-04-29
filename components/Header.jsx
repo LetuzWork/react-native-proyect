@@ -24,12 +24,12 @@ const AccountButton = styled.TouchableOpacity`
     
 `;
 
-const Header = () =>{
+const Header = ({navigation}) =>{
     return (
         <SafeAreaView>
         <HeaderContainer>
             <Title>Batsy</Title>
-            <AccountButton>
+            <AccountButton onPress={() => navigation.navigate('Profile', { id: '45032905' })}>
                 <MaterialIcon name="person" size={36} color="#fff" />
             </AccountButton>
         </HeaderContainer>

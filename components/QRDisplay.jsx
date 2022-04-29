@@ -1,9 +1,10 @@
 
 // import { Text } from 'react-native'; 
 import styled from 'styled-components/native';
-import MaterialIcon from "react-native-vector-icons/MaterialIcons";
-// import { generateQR } from '../utils/QRGenerator';
+// import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 import QRCode from 'react-native-qrcode-svg';
+import { useEffect } from 'react';
+import AsyncStorage from '../utils/AsyncStorage';
 
 const Container = styled.View`
     position: absolute;
@@ -20,6 +21,9 @@ const Container = styled.View`
 
 `
 const QRDisplay = () =>{
+    useEffect(async ()=>{
+        console.log( await AsyncStorage.getData('user'))
+    })
     return (
         <Container>
             {/* <MaterialIcon name="qr-code-2" size={300} /> */}

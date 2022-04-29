@@ -42,10 +42,8 @@ export default function LandingPage({ navigation }) {
     <QRDisplayDisabler onPress={()=> setDisplayQR(false)} />
       <NewsContainer />
       <ButtonsContainer>
-        <LandingButton onPress={() =>
-        navigation.navigate('Profile', { name: 'Marto' })
-      }>
-          <MaterialIcon name="check-box" size={40} />
+        <LandingButton >
+          <MaterialIcon name="check-box" size={40} onPress={() => navigation.navigate('Login')}  />
         </LandingButton>
         <LandingButton style={{ marginBottom: 50 }} onPress={()=> setDisplayQR(true)}>
           <MaterialIcon name="qr-code-2" size={60} />

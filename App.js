@@ -8,23 +8,25 @@ const Stack = createNativeStackNavigator();
 
 import LandingPage from "./components/LandingPage";
 import Header from "./components/Header";
+import ProfileScreen from "./components/ProfileScreen";
+import LoginScreen from "./components/LoginScreen";
 
-const ProfileScreen = ({ navigation, route }) => {
-  return <Text>This is {route.params.name}'s profile</Text>;
-};
-
+// const ProfileScreen = ({ navigation, route }) => {
+//   return <Text>This is {route.params.name}'s profile</Text>;
+// };
 export default function App() {
   return (
     <NavigationContainer>
       <SafeAreaProvider>
-        <Header />
+        {/* <Header /> */}
         <Stack.Navigator
           initialRouteName="Landing"
           screenOptions={{
-            header: () => {},
+            header: Header,
           }}
         >
           <Stack.Screen name="Landing" component={LandingPage} />
+          <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Profile" component={ProfileScreen} />
         </Stack.Navigator>
       </SafeAreaProvider>
