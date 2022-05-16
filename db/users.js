@@ -1,5 +1,11 @@
 import { db } from "../db/firebase";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
+const auth = getAuth();
 
 const getUser = async (id) => {
   try {
@@ -11,17 +17,41 @@ const getUser = async (id) => {
   }
 };
 
-const addUser = ({ id, name, surname, course, email, birth, number }) => {
-  const docRef = setDoc(doc(db, "users", id), {
-    name,
-    surname,
-    course,
-    email,
-    birth,
-    number,
-  })
-    .then(() => alert(docRef))
-    .catch(() => alert(e));
+const authUser = async ({ email, password }) => {
+  try {
+    return await signInWithEmailAndPassword(auth, email, password);
+  } catch (e) {
+    return e;
+  }
 };
 
-export { getUser, addUser };
+const addUser = async ({
+  DNI,
+  name,
+  surname,
+  course,
+  email,
+  phone,
+  address,
+  password,
+}) => {
+  try {
+    const result = { msg: "success" };
+    const user = await createUserWithEmailAndPassword(auth, email, password);
+    user &&
+      (await setDoc(doc(db, "users", DNI), {
+        name,
+        surname,
+        course,
+        email,
+        phone,
+        address,
+      }));
+
+    return [result, user];
+  } catch (e) {
+    return e;
+  }
+};
+
+export { getUser, addUser, authUser };

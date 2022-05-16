@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
-import { TextInput } from 'react-native'; 
+import { Text, ScrollView, } from 'react-native'; 
 import styled from "styled-components/native";
-import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 
-import { authUser } from '../db/users';
+import MaterialIcon from "react-native-vector-icons/MaterialIcons";
+import {Picker} from '@react-native-picker/picker';
+
+import { addUser } from '../db/users';
 import userConfig from '../config/userConfig';
+
 
 const Container = styled.View`
   flex: 1;
   background: #eee;
   align-items: center;
-  /*justify-content: center;*/
+  max-width: 400px;
+  justify-content: center;
 `;
 const Title = styled.Text`
-  font-size: 30px;
+  font-size: 20px;
   color: #112;
-  /*justify-content: center;*/
 `;
 const FormatedTextInput = styled.View`
   display: flex;
@@ -50,25 +53,32 @@ const SubmitButtonText = styled.Text`
   text-align: center;
 `;
 
-const userLoginConfig = userConfig.filter(f => f.login);
+const RegisterScreen = ({ navigation }) =>{
+    const [user, setUser] = useState({});
 
-const LoginScreen = ({navigation}) =>{
-    const [user, setUser] = useState(userConfig);
-
-    const updateUser = (key,value) => setUser({ ...user, [key]:value });
-    
-    const handleSubmit = async ()=> {
-      const result = await authUser(user);
+    const updateUser = (key,value) => {
+      setUser({ ...user, [key]:value })
+    };
+    const handleSubmit = async () =>{
+      const result = await addUser(user);
       console.log(result);
-      if(!result.error) navigation.navigate('Landing');
-    }
+      // navigation.navigate('Landing');
+    };
     return (
         <Container>
-            <Title>Inicio de Sesion</Title>
-         {userLoginConfig.map(field => (
+          <Title>Registro</Title>
+          <ScrollView>
+            {userConfig.map(field => (
             <FormatedTextInput key={`f-${field.name}`}>
               <MaterialIcon name={field.icon} size={40} color='#345' />
-              <FormatedTextInputField
+              {field.type === 'dropdown'
+              ?<Picker
+                selectedValue={user[field.name]}
+               onValueChange={value => updateUser(field.name, value)}
+                style={{width: "80%", marginLeft: 10}}>
+                {field.options.map(option => <Picker.Item key={option} label={option} value={option} />)}
+                </Picker>
+              :<FormatedTextInputField
                 keyboardType={field.type}
                 placeholder={field.label}
                 onChangeText={value => updateUser(field.name, value)}
@@ -76,13 +86,17 @@ const LoginScreen = ({navigation}) =>{
                 secureTextEntry={field.secureTextEntry}
                 required
               />
+              }
             </FormatedTextInput>
             ))}
-            <SubmitButton onPress={handleSubmit} disabled={userLoginConfig.some(({name})=> !user[name])}>
-              <SubmitButtonText>Iniciar</SubmitButtonText>
+            <SubmitButton onPress={handleSubmit} disabled={userConfig.some(({name})=> !user[name])}>
+              <SubmitButtonText>Registrarse</SubmitButtonText>
             </SubmitButton>
+          </ScrollView>
+          
+
         </Container>
     )
 }
 
-export default LoginScreen;
+export default RegisterScreen;
