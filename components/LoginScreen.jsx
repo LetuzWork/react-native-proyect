@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { TextInput } from 'react-native'; 
+import { View,Text,TouchableOpacity} from 'react-native'; 
 import styled from "styled-components/native";
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
 
 import { authUser } from '../db/users';
 import userConfig from '../config/userConfig';
+import AsyncStorage from "../utils/AsyncStorage";
 
 const Container = styled.View`
   flex: 1;
   background: #eee;
   align-items: center;
+  margin-top: 15px;
   /*justify-content: center;*/
 `;
 const Title = styled.Text`
@@ -59,8 +61,11 @@ const LoginScreen = ({navigation}) =>{
     
     const handleSubmit = async ()=> {
       const result = await authUser(user);
-      console.log(result);
-      if(!result.error) navigation.navigate('Landing');
+      // console.log(result);
+      if(!result.error){
+        await AsyncStorage.storeData("user", result.user);
+        navigation.navigate('Landing');
+      }
     }
     return (
         <Container>
@@ -81,6 +86,12 @@ const LoginScreen = ({navigation}) =>{
             <SubmitButton onPress={handleSubmit} disabled={userLoginConfig.some(({name})=> !user[name])}>
               <SubmitButtonText>Iniciar</SubmitButtonText>
             </SubmitButton>
+            <View style={{display: 'flex', flexDirection:'row'}}>
+              <Text>¿Aun no tenes cuenta? </Text>
+              <TouchableOpacity onPressOut={() =>  navigation.navigate('Register') }>
+                <Text style={{color: 'blue'}}> Registrate Aquí</Text>
+              </TouchableOpacity>
+            </View>
         </Container>
     )
 }

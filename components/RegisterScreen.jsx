@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Text, ScrollView, } from 'react-native'; 
+import { Text, ScrollView, View, TouchableOpacity } from 'react-native'; 
 import styled from "styled-components/native";
 
 import MaterialIcon from "react-native-vector-icons/MaterialIcons";
@@ -62,7 +62,7 @@ const RegisterScreen = ({ navigation }) =>{
     const handleSubmit = async () =>{
       const result = await addUser(user);
       console.log(result);
-      // navigation.navigate('Landing');
+      navigation.navigate('Login');
     };
     return (
         <Container>
@@ -92,6 +92,12 @@ const RegisterScreen = ({ navigation }) =>{
             <SubmitButton onPress={handleSubmit} disabled={userConfig.some(({name})=> !user[name])}>
               <SubmitButtonText>Registrarse</SubmitButtonText>
             </SubmitButton>
+            <View style={{display: 'flex', flexDirection:'row'}}>
+              <Text>¿Ya tenes cuenta? </Text>
+              <TouchableOpacity onPressOut={() => navigation.navigate('Login')}>
+                <Text style={{color: 'blue', marginBottom: 50,}}> Inicia Sesion Aquí</Text>
+              </TouchableOpacity>
+            </View>
           </ScrollView>
           
 
